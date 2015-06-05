@@ -8,6 +8,11 @@ output:
     toc: yes
 ---
 
+```{r setup, include=FALSE}
+options(width=120)
+```
+
+
 R session info:
 ```{r rsession,echo=TRUE,prompt=TRUE,comment=''}
 sessionInfo()

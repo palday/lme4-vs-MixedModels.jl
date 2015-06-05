@@ -2,6 +2,9 @@
 Phillip Alday  
 June 2015  
 
+
+
+
 R session info:
 
 ```r
@@ -14,20 +17,16 @@ Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Ubuntu 13.10
 
 locale:
- [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_US.UTF-8    
- [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_US.UTF-8   
- [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_AU.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
- [1] magrittr_1.5    formatR_1.2     tools_3.2.0     htmltools_0.2.6
- [5] yaml_2.1.13     stringi_0.4-1   rmarkdown_0.6.1 knitr_1.10.5   
- [9] stringr_1.0.0   digest_0.6.8    evaluate_0.7   
+ [1] magrittr_1.5    formatR_1.2     tools_3.2.0     htmltools_0.2.6 yaml_2.1.13     stringi_0.4-1   rmarkdown_0.6.1
+ [8] knitr_1.10.5    stringr_1.0.0   digest_0.6.8    evaluate_0.7   
 ```
 
 Julia session info:
@@ -67,7 +66,7 @@ julia> println(Pkg.installed("MixedModels"))
 
 ```
    user  system elapsed 
-  3.980   0.016   4.002 
+  8.137   0.335   8.503 
 ```
 
 ```r
@@ -76,9 +75,7 @@ julia> println(Pkg.installed("MixedModels"))
 
 ```
 Linear mixed model fit by maximum likelihood  ['lmerMod']
-Formula: 
-meanuv ~ wordOrder * ambiguity * np1type * np2type + (1 | subj) +  
-    (1 | item)
+Formula: meanuv ~ wordOrder * ambiguity * np1type * np2type + (1 | subj) +      (1 | item)
    Data: n400
 
       AIC       BIC    logLik  deviance  df.resid 
@@ -96,57 +93,23 @@ Random effects:
 Number of obs: 52191, groups:  item, 60; subj, 37
 
 Fixed effects:
-                                                                Estimate
-(Intercept)                                                     -0.17014
-wordOrdersubject                                                 0.81033
-ambiguityunambig                                                 0.87272
-np1typepronoun                                                   0.09963
-np2typepronoun                                                   1.46224
-wordOrdersubject:ambiguityunambig                               -0.62653
-wordOrdersubject:np1typepronoun                                 -0.20188
-ambiguityunambig:np1typepronoun                                 -0.11287
-wordOrdersubject:np2typepronoun                                 -0.30049
-ambiguityunambig:np2typepronoun                                 -0.10815
-np1typepronoun:np2typepronoun                                   -0.43252
-wordOrdersubject:ambiguityunambig:np1typepronoun                 0.02693
-wordOrdersubject:ambiguityunambig:np2typepronoun                -0.06017
-wordOrdersubject:np1typepronoun:np2typepronoun                   0.88005
-ambiguityunambig:np1typepronoun:np2typepronoun                   0.44676
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun -0.85064
-                                                                Std. Error
-(Intercept)                                                        0.22706
-wordOrdersubject                                                   0.12345
-ambiguityunambig                                                   0.12344
-np1typepronoun                                                     0.12355
-np2typepronoun                                                     0.12378
-wordOrdersubject:ambiguityunambig                                  0.17474
-wordOrdersubject:np1typepronoun                                    0.17472
-ambiguityunambig:np1typepronoun                                    0.17476
-wordOrdersubject:np2typepronoun                                    0.17489
-ambiguityunambig:np2typepronoun                                    0.17483
-np1typepronoun:np2typepronoun                                      0.17523
-wordOrdersubject:ambiguityunambig:np1typepronoun                   0.24721
-wordOrdersubject:ambiguityunambig:np2typepronoun                   0.24732
-wordOrdersubject:np1typepronoun:np2typepronoun                     0.24781
-ambiguityunambig:np1typepronoun:np2typepronoun                     0.24746
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun    0.35031
-                                                                t value
-(Intercept)                                                      -0.749
-wordOrdersubject                                                  6.564
-ambiguityunambig                                                  7.070
-np1typepronoun                                                    0.806
-np2typepronoun                                                   11.814
-wordOrdersubject:ambiguityunambig                                -3.585
-wordOrdersubject:np1typepronoun                                  -1.155
-ambiguityunambig:np1typepronoun                                  -0.646
-wordOrdersubject:np2typepronoun                                  -1.718
-ambiguityunambig:np2typepronoun                                  -0.619
-np1typepronoun:np2typepronoun                                    -2.468
-wordOrdersubject:ambiguityunambig:np1typepronoun                  0.109
-wordOrdersubject:ambiguityunambig:np2typepronoun                 -0.243
-wordOrdersubject:np1typepronoun:np2typepronoun                    3.551
-ambiguityunambig:np1typepronoun:np2typepronoun                    1.805
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun  -2.428
+                                                                Estimate Std. Error t value
+(Intercept)                                                     -0.17014    0.22706  -0.749
+wordOrdersubject                                                 0.81033    0.12345   6.564
+ambiguityunambig                                                 0.87272    0.12344   7.070
+np1typepronoun                                                   0.09963    0.12355   0.806
+np2typepronoun                                                   1.46224    0.12378  11.814
+wordOrdersubject:ambiguityunambig                               -0.62653    0.17474  -3.585
+wordOrdersubject:np1typepronoun                                 -0.20188    0.17472  -1.155
+ambiguityunambig:np1typepronoun                                 -0.11287    0.17476  -0.646
+wordOrdersubject:np2typepronoun                                 -0.30049    0.17489  -1.718
+ambiguityunambig:np2typepronoun                                 -0.10815    0.17483  -0.619
+np1typepronoun:np2typepronoun                                   -0.43252    0.17523  -2.468
+wordOrdersubject:ambiguityunambig:np1typepronoun                 0.02693    0.24721   0.109
+wordOrdersubject:ambiguityunambig:np2typepronoun                -0.06017    0.24732  -0.243
+wordOrdersubject:np1typepronoun:np2typepronoun                   0.88005    0.24781   3.551
+ambiguityunambig:np1typepronoun:np2typepronoun                   0.44676    0.24746   1.805
+wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun -0.85064    0.35031  -2.428
 ```
 
 ```r
@@ -156,7 +119,7 @@ wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun  -2.428
 
 ```
    user  system elapsed 
- 61.824   0.060  61.999 
+115.335   0.535 116.325 
 ```
 
 ```r
@@ -165,8 +128,7 @@ wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun  -2.428
 
 ```
 Linear mixed model fit by maximum likelihood  ['lmerMod']
-Formula: 
-meanuv ~ wordOrder * ambiguity * np1type * np2type + (wordOrder +  
+Formula: meanuv ~ wordOrder * ambiguity * np1type * np2type + (wordOrder +  
     ambiguity | subj) + (wordOrder + ambiguity | item)
    Data: n400
 
@@ -189,57 +151,23 @@ Random effects:
 Number of obs: 52191, groups:  item, 60; subj, 37
 
 Fixed effects:
-                                                                Estimate
-(Intercept)                                                     -0.17634
-wordOrdersubject                                                 0.82441
-ambiguityunambig                                                 0.86707
-np1typepronoun                                                   0.11830
-np2typepronoun                                                   1.48138
-wordOrdersubject:ambiguityunambig                               -0.64326
-wordOrdersubject:np1typepronoun                                 -0.22234
-ambiguityunambig:np1typepronoun                                 -0.11949
-wordOrdersubject:np2typepronoun                                 -0.32068
-ambiguityunambig:np2typepronoun                                 -0.11235
-np1typepronoun:np2typepronoun                                   -0.46886
-wordOrdersubject:ambiguityunambig:np1typepronoun                 0.05819
-wordOrdersubject:ambiguityunambig:np2typepronoun                -0.03085
-wordOrdersubject:np1typepronoun:np2typepronoun                   0.91838
-ambiguityunambig:np1typepronoun:np2typepronoun                   0.45214
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun -0.90358
-                                                                Std. Error
-(Intercept)                                                        0.22188
-wordOrdersubject                                                   0.15615
-ambiguityunambig                                                   0.16846
-np1typepronoun                                                     0.12309
-np2typepronoun                                                     0.12331
-wordOrdersubject:ambiguityunambig                                  0.17399
-wordOrdersubject:np1typepronoun                                    0.17409
-ambiguityunambig:np1typepronoun                                    0.17412
-wordOrdersubject:np2typepronoun                                    0.17426
-ambiguityunambig:np2typepronoun                                    0.17418
-np1typepronoun:np2typepronoun                                      0.17478
-wordOrdersubject:ambiguityunambig:np1typepronoun                   0.24633
-wordOrdersubject:ambiguityunambig:np2typepronoun                   0.24644
-wordOrdersubject:np1typepronoun:np2typepronoun                     0.24725
-ambiguityunambig:np1typepronoun:np2typepronoun                     0.24688
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun    0.34954
-                                                                t value
-(Intercept)                                                      -0.795
-wordOrdersubject                                                  5.279
-ambiguityunambig                                                  5.147
-np1typepronoun                                                    0.961
-np2typepronoun                                                   12.014
-wordOrdersubject:ambiguityunambig                                -3.697
-wordOrdersubject:np1typepronoun                                  -1.277
-ambiguityunambig:np1typepronoun                                  -0.686
-wordOrdersubject:np2typepronoun                                  -1.840
-ambiguityunambig:np2typepronoun                                  -0.645
-np1typepronoun:np2typepronoun                                    -2.683
-wordOrdersubject:ambiguityunambig:np1typepronoun                  0.236
-wordOrdersubject:ambiguityunambig:np2typepronoun                 -0.125
-wordOrdersubject:np1typepronoun:np2typepronoun                    3.714
-ambiguityunambig:np1typepronoun:np2typepronoun                    1.831
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun  -2.585
+                                                                Estimate Std. Error t value
+(Intercept)                                                     -0.17634    0.22188  -0.795
+wordOrdersubject                                                 0.82441    0.15615   5.279
+ambiguityunambig                                                 0.86707    0.16846   5.147
+np1typepronoun                                                   0.11830    0.12309   0.961
+np2typepronoun                                                   1.48138    0.12331  12.014
+wordOrdersubject:ambiguityunambig                               -0.64326    0.17399  -3.697
+wordOrdersubject:np1typepronoun                                 -0.22234    0.17409  -1.277
+ambiguityunambig:np1typepronoun                                 -0.11949    0.17412  -0.686
+wordOrdersubject:np2typepronoun                                 -0.32068    0.17426  -1.840
+ambiguityunambig:np2typepronoun                                 -0.11235    0.17418  -0.645
+np1typepronoun:np2typepronoun                                   -0.46886    0.17478  -2.683
+wordOrdersubject:ambiguityunambig:np1typepronoun                 0.05819    0.24633   0.236
+wordOrdersubject:ambiguityunambig:np2typepronoun                -0.03085    0.24644  -0.125
+wordOrdersubject:np1typepronoun:np2typepronoun                   0.91838    0.24725   3.714
+ambiguityunambig:np1typepronoun:np2typepronoun                   0.45214    0.24688   1.831
+wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun -0.90358    0.34954  -2.585
 ```
 
 ```r
@@ -248,8 +176,8 @@ wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun  -2.585
 ```
 
 ```
-   user  system elapsed 
-578.240   6.568 586.093 
+    user   system  elapsed 
+1019.460   12.402 1038.711 
 ```
 
 ```r
@@ -258,10 +186,8 @@ wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun  -2.585
 
 ```
 Linear mixed model fit by maximum likelihood  ['lmerMod']
-Formula: 
-meanuv ~ wordOrder * ambiguity * np1type * np2type + (wordOrder +  
-    ambiguity + np1type + np2type | subj) + (wordOrder + ambiguity +  
-    np1type + np2type | item)
+Formula: meanuv ~ wordOrder * ambiguity * np1type * np2type + (wordOrder +  
+    ambiguity + np1type + np2type | subj) + (wordOrder + ambiguity +      np1type + np2type | item)
    Data: n400
 
       AIC       BIC    logLik  deviance  df.resid 
@@ -287,57 +213,23 @@ Random effects:
 Number of obs: 52191, groups:  item, 60; subj, 37
 
 Fixed effects:
-                                                                Estimate
-(Intercept)                                                     -0.16342
-wordOrdersubject                                                 0.81019
-ambiguityunambig                                                 0.84761
-np1typepronoun                                                   0.12962
-np2typepronoun                                                   1.45031
-wordOrdersubject:ambiguityunambig                               -0.59836
-wordOrdersubject:np1typepronoun                                 -0.23019
-ambiguityunambig:np1typepronoun                                 -0.10120
-wordOrdersubject:np2typepronoun                                 -0.29046
-ambiguityunambig:np2typepronoun                                 -0.09670
-np1typepronoun:np2typepronoun                                   -0.47714
-wordOrdersubject:ambiguityunambig:np1typepronoun                 0.01327
-wordOrdersubject:ambiguityunambig:np2typepronoun                -0.06206
-wordOrdersubject:np1typepronoun:np2typepronoun                   0.92902
-ambiguityunambig:np1typepronoun:np2typepronoun                   0.45835
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun -0.91021
-                                                                Std. Error
-(Intercept)                                                        0.26886
-wordOrdersubject                                                   0.15508
-ambiguityunambig                                                   0.16674
-np1typepronoun                                                     0.15573
-np2typepronoun                                                     0.28229
-wordOrdersubject:ambiguityunambig                                  0.17153
-wordOrdersubject:np1typepronoun                                    0.17169
-ambiguityunambig:np1typepronoun                                    0.17154
-wordOrdersubject:np2typepronoun                                    0.17172
-ambiguityunambig:np2typepronoun                                    0.17158
-np1typepronoun:np2typepronoun                                      0.17205
-wordOrdersubject:ambiguityunambig:np1typepronoun                   0.24290
-wordOrdersubject:ambiguityunambig:np2typepronoun                   0.24292
-wordOrdersubject:np1typepronoun:np2typepronoun                     0.24336
-ambiguityunambig:np1typepronoun:np2typepronoun                     0.24301
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun    0.34404
-                                                                t value
-(Intercept)                                                      -0.608
-wordOrdersubject                                                  5.224
-ambiguityunambig                                                  5.083
-np1typepronoun                                                    0.832
-np2typepronoun                                                    5.138
-wordOrdersubject:ambiguityunambig                                -3.488
-wordOrdersubject:np1typepronoun                                  -1.341
-ambiguityunambig:np1typepronoun                                  -0.590
-wordOrdersubject:np2typepronoun                                  -1.691
-ambiguityunambig:np2typepronoun                                  -0.564
-np1typepronoun:np2typepronoun                                    -2.773
-wordOrdersubject:ambiguityunambig:np1typepronoun                  0.055
-wordOrdersubject:ambiguityunambig:np2typepronoun                 -0.255
-wordOrdersubject:np1typepronoun:np2typepronoun                    3.818
-ambiguityunambig:np1typepronoun:np2typepronoun                    1.886
-wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun  -2.646
+                                                                Estimate Std. Error t value
+(Intercept)                                                     -0.16342    0.26886  -0.608
+wordOrdersubject                                                 0.81019    0.15508   5.224
+ambiguityunambig                                                 0.84761    0.16674   5.083
+np1typepronoun                                                   0.12962    0.15573   0.832
+np2typepronoun                                                   1.45031    0.28229   5.138
+wordOrdersubject:ambiguityunambig                               -0.59836    0.17153  -3.488
+wordOrdersubject:np1typepronoun                                 -0.23019    0.17169  -1.341
+ambiguityunambig:np1typepronoun                                 -0.10120    0.17154  -0.590
+wordOrdersubject:np2typepronoun                                 -0.29046    0.17172  -1.691
+ambiguityunambig:np2typepronoun                                 -0.09670    0.17158  -0.564
+np1typepronoun:np2typepronoun                                   -0.47714    0.17205  -2.773
+wordOrdersubject:ambiguityunambig:np1typepronoun                 0.01327    0.24290   0.055
+wordOrdersubject:ambiguityunambig:np2typepronoun                -0.06206    0.24292  -0.255
+wordOrdersubject:np1typepronoun:np2typepronoun                   0.92902    0.24336   3.818
+ambiguityunambig:np1typepronoun:np2typepronoun                   0.45835    0.24301   1.886
+wordOrdersubject:ambiguityunambig:np1typepronoun:np2typepronoun -0.91021    0.34404  -2.646
 ```
 
 ## Julia 
