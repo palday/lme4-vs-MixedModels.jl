@@ -1,0 +1,195 @@
+---
+title: "Model Fits in lme4 and MixedModels.jl"
+author: "Phillip Alday"
+date: "June 2015"
+output: 
+  html_document: 
+    keep_md: yes
+    toc: yes
+---
+
+R session info:
+```{r rsession,echo=TRUE,prompt=TRUE,comment=''}
+sessionInfo()
+```
+
+Julia session info:
+```
+julia> println(versioninfo())
+Julia Version 0.3.8
+Commit 79599ad (2015-04-30 23:40 UTC)
+Platform Info:
+  System: Linux (x86_64-linux-gnu)
+  CPU: Intel(R) Core(TM) i5 CPU       M 480  @ 2.67GHz
+  WORD_SIZE: 64
+  BLAS: libblas.so.3
+  LAPACK: liblapack.so.3
+  LIBM: libopenlibm
+  LLVM: libLLVM-3.3
+nothing
+
+julia> println(Pkg.installed("MixedModels"))
+0.3.22
+```
+
+
+# Models fit by Maximum Likelihood
+
+## R
+
+```{r rml,cache=TRUE,echo=TRUE,prompt=TRUE,comment=''}
+load("aldayetal2014.RData")
+library(lme4)
+d.small <- subset(d,chan %in% c("CZ","CPZ","PZ"))
+n400 <- subset(d.small, win=="N400")
+
+system.time(m0 <- lmer(meanuv ~ wordOrder*ambiguity*np1type*np2type + (1|subj) + (1|item),data=n400,REML=FALSE)
+)
+
+print(summary(m0),correlation=FALSE)
+
+system.time(m1 <- lmer(meanuv ~ wordOrder*ambiguity*np1type*np2type + (wordOrder+ambiguity|subj) + (wordOrder+ambiguity|item),data=n400,REML=FALSE)
+)
+
+print(summary(m1),correlation=FALSE)
+
+system.time(m2 <- lmer(meanuv ~ wordOrder*ambiguity*np1type*np2type + (wordOrder+ambiguity+np1type+np2type|subj) + (wordOrder+ambiguity+np1type+np2type|item),data=n400,REML=FALSE)
+)
+
+print(summary(m2),correlation=FALSE)
+```
+
+## Julia 
+
+```{r eval=FALSE,include=FALSE}
+using DataFrames, MixedModels
+d = DataFrame(read_rda("aldayetal2014.RData")["d"]);
+dsmall = d[bool([x in ["CZ","CPZ","PZ"] for x in d[:chan]]),:];
+n400 = dsmall[dsmall[:win] .== "N400",:];
+@time m0 = fit(lmm(meanuv ~ 1 + wordOrder*ambiguity*np1type*np2type + (1|item) + (1|subj), n400));
+print(m0)
+@time m1 = fit(lmm(meanuv ~ 1 + wordOrder*ambiguity*np1type*np2type + (1+wordOrder+ambiguity|item) + (1+wordOrder+ambiguity|subj), n400));
+print(m1);
+@time m2 = fit(lmm(meanuv ~ 1 + wordOrder*ambiguity*np1type*np2type +                                  (1+wordOrder+ambiguity+np1type+np2type|item) +                                     (1+wordOrder+ambiguity+np1type+np2type|subj), n400));
+print(m2)
+```
+
+```
+julia> using DataFrames, MixedModels
+
+julia> d = DataFrame(read_rda("aldayetal2014.RData")["d"]);
+
+julia> dsmall = d[bool([x in ["CZ","CPZ","PZ"] for x in d[:chan]]),:];
+
+julia> n400 = dsmall[dsmall[:win] .== "N400",:];
+
+julia> @time m0 = fit(lmm(meanuv ~ 1 + wordOrder*ambiguity*np1type*np2type + (1|item) + (1|subj), n400));
+elapsed time: 20.650423511 seconds (1259493348 bytes allocated, 24.05% gc time)
+
+julia> print(m0)
+Linear mixed model fit by maximum likelihood
+Formula: meanuv ~ 1 + wordOrder * ambiguity * np1type * np2type + (1 | item) + (1 | subj)
+
+ logLik: -158029.004553, deviance: 316058.009106
+
+Variance components:
+            Variance   Std.Dev.  
+ item      0.25483327 0.50481013
+ subj      1.46886921 1.21196915
+ Residual 24.83310014 4.98328207
+ Number of obs: 52191; levels of grouping factors: 60, 37
+
+  Fixed-effects parameters:
+                                     Estimate Std.Error   z value
+(Intercept)                         -0.170135  0.227059 -0.749301
+wordOrdersubject                     0.810334  0.123448   6.56415
+ambiguityunambig                     0.872724  0.123444   7.06978
+np1typepronoun                      0.0996264  0.123553  0.806347
+np2typepronoun                        1.46224  0.123776   11.8136
+wordOrdersubject&ambiguityunambig   -0.626527  0.174739   -3.5855
+wordOrdersubject&np1typepronoun     -0.201881  0.174717  -1.15548
+wordOrdersubject&np2typepronoun     -0.300485  0.174889  -1.71815
+ambiguityunambig&np1typepronoun     -0.112868  0.174758 -0.645855
+ambiguityunambig&np2typepronoun     -0.108149   0.17483 -0.618594
+np1typepronoun&np2typepronoun       -0.432515   0.17523  -2.46827
+wordOrdersubject&ambiguityunambig   0.0269254  0.247212  0.108916
+wordOrdersubject&ambiguityunambig  -0.0601712  0.247325 -0.243288
+wordOrdersubject&np1typepronoun      0.880053  0.247806   3.55139
+ambiguityunambig&np1typepronoun      0.446759   0.24746   1.80538
+wordOrdersubject&ambiguityunambig   -0.850636  0.350306  -2.42827
+
+julia> @time m1 = fit(lmm(meanuv ~ 1 + wordOrder*ambiguity*np1type*np2type + (1+wordOrder+ambiguity|item) + (1+wordOrder+ambiguity|subj), n400));
+elapsed time: 13.114836832 seconds (1768485232 bytes allocated, 50.79% gc time)
+
+julia> print(m1);
+Linear mixed model fit by maximum likelihood
+Formula: meanuv ~ 1 + wordOrder * ambiguity * np1type * np2type + ((1 + wordOrder + ambiguity) | item) + ((1 + wordOrder + ambiguity) | subj)
+
+ logLik: -157888.376486, deviance: 315776.752972
+
+Variance components:
+            Variance   Std.Dev.    Corr.
+ item      0.35132918 0.59273027
+           0.23458607 0.48434086 -0.30
+           0.24918868 0.49918802 -0.42 -0.42
+ subj      1.32575435 1.15141406
+           0.19840059 0.44542182  0.16
+           0.33737448 0.58083947 -0.11 -0.11
+ Residual 24.58280904 4.95810539
+ Number of obs: 52191; levels of grouping factors: 60, 37
+
+  Fixed-effects parameters:
+ambiguityunambig&np2typepronoun     -0.112348  0.174184 -0.644994
+np1typepronoun&np2typepronoun       -0.468859  0.174777  -2.68261
+wordOrdersubject&ambiguityunambig   0.0581888  0.246326  0.236226
+wordOrdersubject&ambiguityunambig  -0.0308533   0.24644 -0.125196
+wordOrdersubject&np1typepronoun      0.918377  0.247248   3.71439
+ambiguityunambig&np1typepronoun      0.452145  0.246883   1.83141
+wordOrdersubject&ambiguityunambig   -0.903582  0.349536  -2.58509
+
+julia> @time m2 = fit(lmm(meanuv ~ 1 + wordOrder*ambiguity*np1type*np2type +                                  (1+wordOrder+ambiguity+np1type+np2type|item) +                                     (1+wordOrder+ambiguity+np1type+np2type|subj), n400));
+elapsed time: 28.146366217 seconds (2426816680 bytes allocated, 37.34% gc time)
+
+julia> print(m2)
+Linear mixed model fit by maximum likelihood
+Formula: meanuv ~ 1 + wordOrder * ambiguity * np1type * np2type + ((1 + wordOrder + ambiguity + np1type + np2type) | item) + ((1 + wordOrder + ambiguity + np1type + np2type) | subj)
+
+ logLik: -157234.785839, deviance: 314469.571677
+
+Variance components:
+            Variance   Std.Dev.    Corr.
+ item      0.61958276 0.78713580
+           0.23555342 0.48533846 -0.21
+           0.25190194 0.50189833 -0.33 -0.33
+           0.30335998 0.55078125 -0.22 -0.22 -0.22
+           0.61963811 0.78717096 -0.61 -0.61 -0.61 -0.61
+ subj      2.02160641 1.42183206
+           0.20111041 0.44845335  0.11
+           0.33079992 0.57515208 -0.24 -0.24
+           0.16601203 0.40744574  0.03  0.03  0.03
+           2.02052768 1.42145267 -0.55 -0.55 -0.55 -0.55
+ Residual 23.81509690 4.88007140
+ Number of obs: 52191; levels of grouping factors: 60, 37
+
+  Fixed-effects parameters:
+                                     Estimate Std.Error   z value
+(Intercept)                         -0.163416  0.268861 -0.607807
+wordOrdersubject                     0.810187  0.155077    5.2244
+ambiguityunambig                     0.847608  0.166738   5.08349
+np1typepronoun                       0.129621  0.155731  0.832338
+np2typepronoun                        1.45031  0.282292   5.13763
+wordOrdersubject&ambiguityunambig   -0.598355  0.171535  -3.48825
+wordOrdersubject&np1typepronoun     -0.230189   0.17169  -1.34072
+wordOrdersubject&np2typepronoun     -0.290458  0.171717  -1.69149
+ambiguityunambig&np1typepronoun     -0.101199  0.171542 -0.589941
+ambiguityunambig&np2typepronoun    -0.0967029   0.17158 -0.563601
+np1typepronoun&np2typepronoun       -0.477141  0.172047  -2.77332
+wordOrdersubject&ambiguityunambig   0.0132734    0.2429 0.0546457
+wordOrdersubject&ambiguityunambig  -0.0620641  0.242925 -0.255487
+wordOrdersubject&np1typepronoun      0.929022  0.243358   3.81751
+ambiguityunambig&np1typepronoun       0.45835  0.243008   1.88615
+wordOrdersubject&ambiguityunambig   -0.910206  0.344039  -2.64565
+
+```
+
+
